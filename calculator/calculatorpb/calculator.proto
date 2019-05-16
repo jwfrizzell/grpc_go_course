@@ -1,0 +1,74 @@
+syntax="proto3";
+
+package calculator;
+
+option go_package="calculatorpb";
+
+message Calculator {
+    int64 first_number = 1;
+    int64 last_number = 2;
+}
+
+message Prime {
+    int64 number = 1;
+}
+
+message AverageRequest {
+    int64 number = 1;
+}
+message CalculatorRequest {
+    Calculator calculator = 1;
+}
+
+message CalculatorResponse {
+    int64 result = 1;
+}
+
+message PrimeRequest {
+    Prime prime = 1;
+}
+
+message FindMaxRequest {
+    double number = 1;
+}
+
+message SquareRootRequest {
+    double number = 1;
+}
+
+message PrimeResponse {
+    int64 number = 1;
+}
+
+message AverageResponse {
+    double number = 1;
+}
+
+message FindMaxResponse{
+    double number = 1;
+}
+
+message SquareRootResponse {
+    double number = 1;
+}
+
+service CalculatorService {
+    //Unary
+    rpc CalculateSum(CalculatorRequest) returns (CalculatorResponse){}
+
+    //Streaming Request
+    rpc CalculatePrimeDecomposition(PrimeRequest) returns (stream PrimeResponse){}
+
+    //Client side streaming
+    rpc CalculateAverage(stream AverageRequest) returns (AverageResponse){}
+
+    //Bi Directional Streaming
+    rpc FindMax(stream FindMaxRequest) returns (stream FindMaxResponse){}
+
+    //Unary Square Root
+    //Error handling
+    //This RPC will throw an exception is the number sent is less
+    //than 0.
+    //The error sent is type INVALID_ARGUMENT
+    rpc SquareRoot(SquareRootRequest) returns (SquareRootResponse){}
+}
